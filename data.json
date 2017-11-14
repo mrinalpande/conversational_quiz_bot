@@ -1,0 +1,25 @@
+{
+    "intent": {
+        "name": "greet", 
+        "confidence": 0.7028232958181023
+    }, 
+    "entities": [], 
+    "intent_ranking": 
+    [{
+        "name": "greet", 
+        "confidence": 0.7028232958181023
+    }, 
+    {
+        "name": "goodbye", 
+        "confidence": 0.14298864950963153
+    }, 
+    {
+        "name": "quiz_search", 
+        "confidence": 0.08743951469218535
+    }, 
+    {
+        "name": "affirm", 
+        "confidence": 0.06674853998008078
+    }], 
+    "text": "hello"
+    }

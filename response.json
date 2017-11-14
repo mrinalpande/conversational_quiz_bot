@@ -1,0 +1,1 @@
+{"intent": {"name": "goodbye", "confidence": 0.586746282271553}, "entities": [], "intent_ranking": [{"name": "goodbye", "confidence": 0.586746282271553}, {"name": "greet", "confidence": 0.18988197554846994}, {"name": "quiz_search", "confidence": 0.1623391114021423}, {"name": "affirm", "confidence": 0.061032630777834815}], "text": "bye"}
