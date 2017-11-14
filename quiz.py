@@ -3,6 +3,48 @@ from pprint import pprint
 import random
 from random import randint
 import os
+import nltk
+from nltk.corpus import wordnet as wn
+
+WUP_Threshold = 0.8
+
+
+def extractNounsAndAdjectives(words):
+        NJ = []
+        pos = nltk.pos_tag(words)
+        for word, tag in pos:
+                if tag[0] in ('N', 'J'):
+                        NJ.append(word)
+        return NJ
+
+# Wu-Palmer similarity
+def WUPSimilarity(w1, w2):
+        w1 = wn.synsets(w1)
+        w2 = wn.synsets(w2)
+        max_WUP = 0
+        # Checking for the first 3 synonyms in order to avoid noise
+        for i in range(0, min(10000, len(w1))):
+                for j in range(0, min(10000, len(w2))):
+                        sim = w1[i].wup_similarity(w2[j])
+                        if sim is not None:
+                                max_WUP = max(max_WUP, sim)
+        return max_WUP
+
+# Compute possible categories based on user response
+def computeCategories(categories, user_response_NJ):
+        probable_categories = {}
+        for w1 in categories:
+                for w2 in user_response_NJ:
+                        for w in w1.split('-'):
+                                sim = WUPSimilarity(w, w2)
+                                # print(w, w2, sim)
+                                if sim >= 1:
+                                        probable_categories.clear()
+                                        probable_categories[w1] = w2
+                                        return probable_categories
+                                elif sim >= WUP_Threshold:
+                                        probable_categories[w1] = w2
+        return probable_categories
 
 def quiz():
         # Loading categories
@@ -25,24 +67,33 @@ def quiz():
         print('What would you liked to be quizzed on?')
         while flag == False:
                 user_response = input()
+                print()
                 if user_response[0] == '@':
                         if user_response[1: ] == 'list_quizzes':
                                 for c in categories:
                                         print(c)
                                 print()
                                 continue
-                words = user_response.split(' ')
-                common = categories.intersection(set(words))
-                if len(common) == 0:
+                words = nltk.word_tokenize(user_response)
+                user_response_NJ = extractNounsAndAdjectives(words)
+                probable_categories = computeCategories(categories, user_response_NJ)
+
+                if len(probable_categories) == 0:
                         print("{} Type @list_quizzes to list categories".format(random.choice(wrong_category)))
-                else:
-                        common = list(common)
-                        category = common[0]
-                        print('Alright! One quiz on {} coming right up!'.format(category))
+                elif len(probable_categories) == 1:
+                        category = list(probable_categories.keys())[0]
+                        print('Alright! One quiz on {}({}) coming right up!'.format(category, probable_categories[category]))
                         print('We score +1 for a correct answer and -0.25 for a wrong one. Enjoy!')
                         print('Type @stop_quiz anytime to quit the quiz')
                         flag = True
-
+                else:
+                        print("OK, judging by your response I have multiple categories.")
+                        keys = probable_categories.keys()
+                        for key in keys:
+                                print("{}({})".format(key, probable_categories[key]))
+                        print()
+                        print("Which one would you like?")
+                        print("To list all my categories, you can type @list_quizzes\n")
 
         # Open quiz bank for particular category
         dir_path = os.path.join('OpenTriviaQA_JSON')
@@ -60,7 +111,7 @@ def quiz():
                 rand = randint(-1, len(data) - 1)
                 while rand in genarated:
                         rand = randint(-1, len(data) - 1)
-                genarated.append(rand);
+                genarated.append(rand)
 
                 print(data[rand]['question'])
                 ct = 'A'

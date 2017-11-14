@@ -1,0 +1,359 @@
+{
+  "rasa_nlu_data": {
+    "entity_synonyms": [
+      {
+        "synonyms": [
+          "vegg",
+          "veggie"
+        ],
+        "value": "vegetarian"
+      },
+      {
+        "synonyms": [
+          "Chinese",
+          "chines",
+          "Chines"
+        ],
+        "value": "chinese"
+      }
+    ],
+    "regex_features": [
+      {
+        "name": "zipcode",
+        "pattern": "[0-9]{5}"
+      }
+    ],
+    "common_examples": [
+      {
+        "intent": "greet",
+        "text": "hey",
+        "entities": []
+      },
+      {
+        "intent": "greet",
+        "text": "howdy",
+        "entities": []
+      },
+      {
+        "intent": "greet",
+        "text": "hey there",
+        "entities": []
+      },
+      {
+        "intent": "greet",
+        "text": "hello",
+        "entities": []
+      },
+      {
+        "intent": "greet",
+        "text": "hi",
+        "entities": []
+      },
+      {
+        "intent": "greet",
+        "text": "good morning",
+        "entities": []
+      },
+      {
+        "intent": "greet",
+        "text": "good evening",
+        "entities": []
+      },
+      {
+        "intent": "greet",
+        "text": "dear sir",
+        "entities": []
+      },
+      {
+        "intent": "affirm",
+        "text": "yes",
+        "entities": []
+      },
+      {
+        "intent": "affirm",
+        "text": "yep",
+        "entities": []
+      },
+      {
+        "intent": "affirm",
+        "text": "yeah",
+        "entities": []
+      },
+      {
+        "intent": "affirm",
+        "text": "indeed",
+        "entities": []
+      },
+      {
+        "intent": "affirm",
+        "text": "that's right",
+        "entities": []
+      },
+      {
+        "intent": "affirm",
+        "text": "ok",
+        "entities": []
+      },
+      {
+        "intent": "affirm",
+        "text": "great",
+        "entities": []
+      },
+      {
+        "intent": "affirm",
+        "text": "right, thank you",
+        "entities": []
+      },
+      {
+        "intent": "affirm",
+        "text": "correct",
+        "entities": []
+      },
+      {
+        "intent": "affirm",
+        "text": "great choice",
+        "entities": []
+      },
+      {
+        "intent": "affirm",
+        "text": "sounds really good",
+        "entities": []
+      },
+      {
+        "intent": "quiz_search",
+        "text": "Quiz",
+        "entities": [
+          {
+            "start": 0,
+            "entity": "category",
+            "end": 4,
+            "value": "Quiz"
+          }
+        ]
+      },
+      {
+        "intent": "quiz_search",
+        "text": "I want a quiz",
+        "entities": []
+      },
+      {
+        "intent": "quiz_search",
+        "text": "i'm looking for a quiz on sports",
+        "entities": [
+          {
+            "start": 26,
+            "entity": "category",
+            "end": 32,
+            "value": "sports"
+          }
+        ]
+      },
+      {
+        "intent": "quiz_search",
+        "text": "show me sports quiz",
+        "entities": [
+          {
+            "start": 8,
+            "entity": "category",
+            "end": 14,
+            "value": "sports"
+          }
+        ]
+      },
+      {
+        "intent": "quiz_search",
+        "text": "start a quiz on sports",
+        "entities": [
+          {
+            "start": 16,
+            "entity": "category",
+            "end": 22,
+            "value": "sports"
+          }
+        ]
+      },
+      {
+        "intent": "quiz_search",
+        "text": "let's start a quiz",
+        "entities": []
+      },
+      {
+        "intent": "quiz_search",
+        "text": "start the quiz",
+        "entities": []
+      },
+      {
+        "intent": "quiz_search",
+        "text": "start quiz on sports",
+        "entities": [
+          {
+            "start": 14,
+            "entity": "category",
+            "end": 20,
+            "value": "sports"
+          }
+        ]
+      },
+      {
+        "intent": "quiz_search",
+        "text": "I want a general knowledge quiz",
+        "entities": [
+          {
+            "start": 9,
+            "entity": "category",
+            "end": 26,
+            "value": "general knowledge"
+          }
+        ]
+      },
+      {
+        "intent": "quiz_search",
+        "text": "I am looking a quiz on general knowledge",
+        "entities": [
+          {
+            "start": 23,
+            "entity": "category",
+            "end": 40,
+            "value": "general knowledge"
+          }
+        ]
+      },
+      {
+        "intent": "quiz_search",
+        "text": "I am looking for general knowledge quiz",
+        "entities": [
+          {
+            "start": 17,
+            "entity": "category",
+            "end": 34,
+            "value": "general knowledge"
+          }
+        ]
+      },
+      {
+        "intent": "quiz_search",
+        "text": "general knowledge quiz",
+        "entities": [
+          {
+            "start": 0,
+            "entity": "category",
+            "end": 18,
+            "value": "general knowledge "
+          }
+        ]
+      },
+      {
+        "intent": "goodbye",
+        "text": "bye",
+        "entities": []
+      },
+      {
+        "intent": "goodbye",
+        "text": "goodbye",
+        "entities": []
+      },
+      {
+        "intent": "goodbye",
+        "text": "good bye",
+        "entities": []
+      },
+      {
+        "intent": "goodbye",
+        "text": "stop",
+        "entities": []
+      },
+      {
+        "intent": "goodbye",
+        "text": "end",
+        "entities": []
+      },
+      {
+        "intent": "goodbye",
+        "text": "farewell",
+        "entities": []
+      },
+      {
+        "intent": "goodbye",
+        "text": "Bye bye",
+        "entities": []
+      },
+      {
+        "intent": "goodbye",
+        "text": "have a good one",
+        "entities": []
+      },
+      {
+        "intent": "quiz_search",
+        "text": "Sports",
+        "entities": [
+          {
+            "start": 0,
+            "entity": "category",
+            "end": 6,
+            "value": "Sports"
+          }
+        ]
+      },
+      {
+        "intent": "quiz_search",
+        "text": "General knowledge",
+        "entities": [
+          {
+            "start": 0,
+            "entity": "category",
+            "end": 17,
+            "value": "General knowledge"
+          }
+        ]
+      },
+      {
+        "intent": "quiz_search",
+        "text": "quiz sports",
+        "entities": [
+          {
+            "start": 5,
+            "entity": "category",
+            "end": 11,
+            "value": "sports"
+          }
+        ]
+      },
+      {
+        "intent": "quiz_search",
+        "text": "quiz general knowledge",
+        "entities": [
+          {
+            "start": 5,
+            "entity": "category",
+            "end": 22,
+            "value": "general knowledge"
+          }
+        ]
+      },
+      {
+        "intent": "quiz_search",
+        "text": "sports quiz",
+        "entities": [
+          {
+            "start": 0,
+            "entity": "category",
+            "end": 6,
+            "value": "sports"
+          }
+        ]
+      },
+      {
+        "intent": "quiz_search",
+        "text": "general knowledge quiz",
+        "entities": [
+          {
+            "start": 0,
+            "entity": "category",
+            "end": 17,
+            "value": "general knowledge"
+          }
+        ]
+      }
+    ]
+  }
+}
