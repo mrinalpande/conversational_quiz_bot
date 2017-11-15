@@ -5,6 +5,8 @@ from random import randint
 import os
 import nltk
 from nltk.corpus import wordnet as wn
+from nltk.corpus import stopwords
+import string
 
 WUP_Threshold = 0.8
 
@@ -23,8 +25,8 @@ def WUPSimilarity(w1, w2):
         w2 = wn.synsets(w2)
         max_WUP = 0
         # Checking for the first 3 synonyms in order to avoid noise
-        for i in range(0, min(10000, len(w1))):
-                for j in range(0, min(10000, len(w2))):
+        for i in range(0, min(3, len(w1))):
+                for j in range(0, min(3, len(w2))):
                         sim = w1[i].wup_similarity(w2[j])
                         if sim is not None:
                                 max_WUP = max(max_WUP, sim)
@@ -45,6 +47,46 @@ def computeCategories(categories, user_response_NJ):
                                 elif sim >= WUP_Threshold:
                                         probable_categories[w1] = w2
         return probable_categories
+
+# Compute the possible choices present in user_response
+def computeChoices(user_response, choices):
+        # # Use this if you want to confirm for ambiguous user answers
+        # uniqueInChoices = []
+        # for i in range(0, len(choices)):
+        #         unique_choice = nltk.word_tokenize(choices[i].lower())
+        #         unique_choice = [i for i in unique_choice if i not in punctuations and i not in stop_words]
+        #         unique_choice = set(unique_choice)
+        #         for j in range(0, len(choices)):
+        #                 if i != j:
+        #                         unique_choice = unique_choice - set(nltk.word_tokenize(choices[j].lower()))
+        #         uniqueInChoices.append(list(unique_choice))
+        punctuations = list(string.punctuation)
+        stop_words = set(stopwords.words('english'))
+        ct = 'a'
+        probable_choices = []
+        user_response = set(nltk.word_tokenize(user_response.lower()))
+        user_response = [i for i in user_response if i not in punctuations and i not in stop_words]
+        user_response = set(user_response)
+        for choice in choices:
+                # print(choice)
+                choice = nltk.word_tokenize(choice.lower())
+                choice = [i for i in choice if i not in punctuations and i not in stop_words]
+                choice = set(choice)
+                if len(user_response.intersection(choice)) > 0:
+                        probable_choices.append(ct)
+                ct = chr(ord(ct) + 1)
+        return probable_choices
+
+def displayBotResponse(score, responses, isCorrect, answer_choice=''):
+        print(random.choice(responses))
+        if isCorrect:
+                score += 1
+        else:
+                score -= 0.25
+                print("The correct answer is {}".format(answer_choice.upper()))
+        print ('Score = {}'.format(score))
+        return score
+
 
 def quiz():
         # Loading categories
@@ -68,7 +110,7 @@ def quiz():
         while flag == False:
                 user_response = input()
                 print()
-                if user_response[0] == '@':
+                if len(user_response) > 0 and user_response[0] == '@':
                         if user_response[1: ] == 'list_quizzes':
                                 for c in categories:
                                         print(c)
@@ -123,24 +165,37 @@ def quiz():
                                 answer_choice = ct
                         ct = chr(ord(ct) + 1)
 
-                user_response = input()
-                if user_response[0] == '@':
-                        if user_response[1: ] == 'stop_quiz':
-                                stop = True
-                                print('Thanks for playing. Your final score was {}'.format(score))
-                                continue
-                response_words = user_response.lower().split(' ')
-                answer_words = answer.lower().split(' ')
-                answer_choice = answer_choice.lower()
+                unambiguous_response = False
+                while unambiguous_response == False:
+                        user_response = input()
+                        print()
+                        if len(user_response) > 0 and user_response[0] == '@':
+                                if user_response[1: ] == 'stop_quiz':
+                                        unambiguous_response = True
+                                        stop = True
+                                        print('Thanks for playing. Your final score was {}'.format(score))
+                                        continue
+                        response_words = nltk.word_tokenize(user_response.lower())
+                        answer_choice = answer_choice.lower()
+                        probable_choices = computeChoices(user_response, data[rand]['choices'])
+                        # print(probable_choices)
 
-                if answer_choice in response_words or set(answer_words).issubset(set(response_words)):
-                        print(random.choice(correct_answer))
-                        score += 1
-                        print ('Score = {}'.format(score))
-                        print(random.choice(next_question))
-                else:
-                        print(random.choice(wrong_answer))
-                        score -= .25
-                        print ('Score = {}'.format(score))
+                        if answer_choice in response_words:
+                                score = displayBotResponse(score, correct_answer, True)
+                                unambiguous_response = True
+                        elif len(probable_choices) >= 1:
+                                if len(probable_choices) == 1:
+                                        unambiguous_response = True
+                                        if probable_choices[0].lower() == answer_choice:
+                                                score = displayBotResponse(score, correct_answer, True)
+                                        else:
+                                                score = displayBotResponse(score, wrong_answer, False, answer_choice)
+                                else:
+                                        print('Hmm. You seem to have picked more than one option. Pick one')
+                                        print(probable_choices)
+                        else:
+                                score = displayBotResponse(score, wrong_answer, False, answer_choice)
+                                unambiguous_response = True
+                if stop == False:
                         print(random.choice(next_question))
                 print()
